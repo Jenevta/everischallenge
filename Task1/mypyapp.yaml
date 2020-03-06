@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mypyapp-deployment 
+  namespace: pythonapp 
+  labels:
+    everischallenge.pe/name: mypyapp-deployment       
+    everischallenge.pe/app: mypyapp      
+    everischallenge.pe/stage: dev
+    everischallenge.pe/version: "0.1"
+    everischallenge.pe/tier: backend 
+spec:
+  progressDeadlineSeconds: 600
+  selector:
+    matchLabels:
+      everischallenge.pe/name: mypyapp-bk       
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        everischallenge.pe/name: mypyapp-bk       
+      annotations:
+        owner: everis/jnevado 
+        componentes: python-3.7 
+        OS-contenedor: Alpine
+    spec:
+      containers:
+      - name: mypyapp-bk 
+        image: mypyapp-bk:v0.1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+          name: http 
+      terminationGracePeriodSeconds: 30
+      schedulerName: default-scheduler 
+      restartPolicy: Always
+     # dnsPolicy:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mypyapp-service
+  labels:
+    everischallenge.pe/name: mypyapp-service       
+    everischallenge.pe/app: mypyapp      
+    everischallenge.pe/stage: dev
+    everischallenge.pe/version: "0.1"
+    everischallenge.pe/tier: network 
+spec:
+  selector:
+    prioritypass.bancofalabella.pe/name: mypyapp-frontend       
+  type: NodePort    
+  ports:
+  - name: http 
+      # Que puerto en el nodo esta disponible el servicio
+    nodePort: 31234
+      # Dentro del cluster que puerto el servicio expone
+    port: 80
+      # Que puerto del pod/contenedor se expone
+    targetPort: 80  
+    protocol: TCP  
+
