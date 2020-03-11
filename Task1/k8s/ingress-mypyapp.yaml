@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1 
+kind: Ingress
+metadata:
+  name: mypyapp-ingress
+spec:
+  rules:
+  - host: http://everischallenge-jn.com
+    http:
+      paths:
+      - path: /grettings
+        backend:
+          serviceName: mypyapp-service  
+          servicePort: 80
+
+      - path: /square
+        backend:
+          serviceName: mypyapp-service
+          servicePort: 80
+
