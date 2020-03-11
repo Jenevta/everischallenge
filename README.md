@@ -1,3 +1,5 @@
+Desarrollo de reto consistente en las dos siguientes tareas:
+
 TASK 1:
 
 Crear un script bash o makefile, que acepte parámetros (CREATE, DESTROY y OUTPUT) con los siguientes pasos:
